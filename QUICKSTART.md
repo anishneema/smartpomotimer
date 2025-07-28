@@ -36,36 +36,40 @@ This shows how the agent works without requiring user interaction.
 
 ## 5. Start Your First Session
 
+**🌐 Web App (Recommended):**
+```bash
+python3 run_web_app.py
+```
+
+**💻 Command Line:**
 ```bash
 python3 main.py
 ```
 
 Then:
-1. Choose option 1: "Start a new focus session"
-2. Enter your available time (e.g., 60 minutes)
-3. Set goals for each block
-4. Focus and reflect!
+1. Enter your available time (e.g., 2pm-4pm or 120 minutes)
+2. Set goals for each block
+3. Focus with the visual timer
+4. Reflect and track your progress!
 
 ## 🎯 Example Session
 
 ```
-You: I'm free for 2 hours (120 minutes)
+You: I'm free 2pm-4pm (120 minutes)
 
-Agent: Let's do 3 Pomodoros (25 min work, 5 min breaks)
-       What's your goal for Block 1?
+App: ✅ 4 Pomodoro blocks planned!
 
-You: Study physics Chapter 4
+You: Goal: Study physics Chapter 4
 
-⏱️ [Timer starts: 25 minutes]
+⏱️ [Visual timer: 25:00 → 00:00]
 
-⏲️ [Timer ends]
+App: ✅ Session Complete!
 
-Agent: Did you finish your goal? What distracted you?
+App: Did you complete your goal? What distracted you?
 
 You: I got distracted by my phone.
 
-Agent: Let's try a 20-min block next with no phone nearby.
-       Goal for Block 2?
+App: 💡 Suggestion: Let's try a 20-min block next with no phone nearby.
 ```
 
 ## 📊 View Your Progress

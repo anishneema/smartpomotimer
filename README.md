@@ -21,6 +21,7 @@ The Focus Flow Agent is an intelligent productivity tool that:
 - 📊 **Adaptive Sessions**: Adjusts duration and strategies based on performance
 - 💾 **Progress Tracking**: Saves all sessions, goals, and reflections
 - 📈 **Analytics**: View success rates, focus time, and improvement trends
+- 🌐 **Web Interface**: Beautiful Streamlit web app with real-time updates
 
 ### MVP User Flow
 1. **Tell the agent your available time** (e.g., "I'm free from 2-4pm")
@@ -48,6 +49,7 @@ Focus Flow Agent MVP
 | **Timer Tool** | Visual countdown and session management |
 | **Logger Tool** | Save sessions, goals, and reflections |
 | **Main Agent** | Orchestrates the complete user experience |
+| **Web App** | Beautiful Streamlit interface with real-time analytics |
 
 ## 🚀 Quick Start
 
@@ -74,9 +76,18 @@ Focus Flow Agent MVP
    echo "NEMOTRON_API_KEY=your_api_key_here" > .env
    ```
 
-4. **Run the application**
+4. **Choose your interface:**
+
+   **🌐 Web App (Recommended)**
    ```bash
-   python main.py
+   python3 run_web_app.py
+   # or
+   streamlit run streamlit_app.py
+   ```
+
+   **💻 Command Line**
+   ```bash
+   python3 main.py
    ```
 
 ## 📖 Usage
