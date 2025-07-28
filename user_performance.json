@@ -1,0 +1,72 @@
+{
+  "sessions": [
+    {
+      "timestamp": "2025-07-27T17:50:41.321717",
+      "task_name": "testing code. ",
+      "task_type": "general",
+      "difficulty": 3,
+      "energy_before": 3,
+      "energy_after": 3,
+      "focus_rating": 3,
+      "completed": true,
+      "duration": 25,
+      "distractions": [],
+      "what_worked": ""
+    },
+    {
+      "timestamp": "2025-07-27T17:51:08.996164",
+      "task_name": "testing code. ",
+      "task_type": "general",
+      "difficulty": 3,
+      "energy_before": 3,
+      "energy_after": 3,
+      "focus_rating": 4,
+      "completed": true,
+      "duration": 25,
+      "distractions": [],
+      "what_worked": ""
+    },
+    {
+      "timestamp": "2025-07-27T17:51:12.992145",
+      "task_name": "testing code. ",
+      "task_type": "general",
+      "difficulty": 3,
+      "energy_before": 3,
+      "energy_after": 5,
+      "focus_rating": 4,
+      "completed": true,
+      "duration": 25,
+      "distractions": [],
+      "what_worked": ""
+    },
+    {
+      "timestamp": "2025-07-27T17:51:16.386337",
+      "task_name": "testing code. ",
+      "task_type": "general",
+      "difficulty": 3,
+      "energy_before": 3,
+      "energy_after": 2,
+      "focus_rating": 4,
+      "completed": true,
+      "duration": 25,
+      "distractions": [],
+      "what_worked": ""
+    },
+    {
+      "timestamp": "2025-07-27T17:51:28.026788",
+      "task_name": "testing code. ",
+      "task_type": "general",
+      "difficulty": 3,
+      "energy_before": 3,
+      "energy_after": 5,
+      "focus_rating": 4,
+      "completed": true,
+      "duration": 25,
+      "distractions": [],
+      "what_worked": ""
+    }
+  ],
+  "task_patterns": {},
+  "energy_patterns": {},
+  "success_rates": {}
+}

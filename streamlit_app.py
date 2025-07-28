@@ -7,6 +7,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from pathlib import Path
+from adaptive_agent import AdaptiveAgent, TaskContext, PerformanceData, SessionRecommendation
 
 # Page configuration
 st.set_page_config(
@@ -102,6 +103,12 @@ if 'session_data' not in st.session_state:
     st.session_state.session_data = {}
 if 'reflection_mode' not in st.session_state:
     st.session_state.reflection_mode = False
+if 'adaptive_agent' not in st.session_state:
+    st.session_state.adaptive_agent = AdaptiveAgent()
+if 'current_task_context' not in st.session_state:
+    st.session_state.current_task_context = None
+if 'session_recommendation' not in st.session_state:
+    st.session_state.session_recommendation = None
 
 def load_session_log():
     """Load existing session data from JSON file"""
@@ -256,38 +263,111 @@ def show_session_page():
         # Timer and goal setting
         if not st.session_state.timer_running and not st.session_state.reflection_mode:
             st.markdown('<div class="goal-input">', unsafe_allow_html=True)
-            st.subheader(f"Block {st.session_state.current_block} Goal")
+            st.subheader(f"Block {st.session_state.current_block} - Intelligent Session Planning")
             
-            goal = st.text_area(
-                "What do you want to accomplish in this 25-minute session?",
-                placeholder="e.g., Study Chapter 3, Write introduction, Review notes...",
-                height=100
-            )
-            
+            # Task input with adaptive features
             col1, col2 = st.columns(2)
-            with col1:
-                if st.button("Start Focus Session", type="primary", disabled=not goal):
-                    st.session_state.timer_running = True
-                    st.session_state.timer_start_time = datetime.now()
-                    st.session_state.session_data[f"block_{st.session_state.current_block}"] = {
-                        'goal': goal,
-                        'start_time': datetime.now()
-                    }
-                    st.rerun()
             
+            with col1:
+                goal = st.text_area(
+                    "What do you want to accomplish?",
+                    placeholder="e.g., Write history essay, Study physics Chapter 4, Review notes...",
+                    height=80
+                )
+                
+                task_type = st.selectbox(
+                    "Task Type",
+                    ["general", "writing", "reading", "coding", "reviewing", "planning", "creative"]
+                )
+                
+                difficulty = st.slider("Task Difficulty", 1, 5, 3, help="1=Easy, 5=Very Complex")
+                
             with col2:
-                if st.button("End Session"):
-                    st.session_state.current_session = None
-                    st.session_state.current_block = 1
-                    st.session_state.session_data = {}
-                    st.rerun()
+                energy_level = st.slider("Your Energy Level", 1, 5, 3, help="1=Tired, 5=Very Energized")
+                
+                urgency = st.slider("Urgency", 1, 5, 3, help="1=Low priority, 5=Critical deadline")
+                
+                deadline = st.date_input("Deadline (optional)", value=None)
+                
+                if deadline:
+                    deadline_time = datetime.combine(deadline, datetime.min.time())
+                else:
+                    deadline_time = None
+            
+            # Get adaptive recommendation
+            if goal and st.button("Get Intelligent Recommendation", type="primary"):
+                task_context = TaskContext(
+                    task_name=goal,
+                    difficulty=difficulty,
+                    energy_level=energy_level,
+                    deadline=deadline_time,
+                    task_type=task_type,
+                    urgency=urgency
+                )
+                
+                st.session_state.current_task_context = task_context
+                recommendation = st.session_state.adaptive_agent.analyze_task_and_plan_session(task_context)
+                st.session_state.session_recommendation = recommendation
+                st.rerun()
+            
+            # Show recommendation if available
+            if st.session_state.session_recommendation:
+                rec = st.session_state.session_recommendation
+                st.markdown(f"""
+                <div class="reflection-card">
+                    <h4>Intelligent Recommendation</h4>
+                    <p><strong>Focus Duration:</strong> {rec.focus_duration} minutes</p>
+                    <p><strong>Break Duration:</strong> {rec.break_duration} minutes</p>
+                    <p><strong>Reasoning:</strong> {rec.reasoning}</p>
+                    <p><strong>Approach:</strong> {rec.suggested_approach}</p>
+                    <p><strong>Confidence:</strong> {rec.confidence:.1%}</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button("Start Adaptive Session", type="primary"):
+                        st.session_state.timer_running = True
+                        st.session_state.timer_start_time = datetime.now()
+                        st.session_state.session_data[f"block_{st.session_state.current_block}"] = {
+                            'goal': goal,
+                            'start_time': datetime.now(),
+                            'task_context': st.session_state.current_task_context,
+                            'recommendation': st.session_state.session_recommendation
+                        }
+                        st.rerun()
+                
+                with col2:
+                    if st.button("Use Standard 25min", type="secondary"):
+                        st.session_state.timer_running = True
+                        st.session_state.timer_start_time = datetime.now()
+                        st.session_state.session_data[f"block_{st.session_state.current_block}"] = {
+                            'goal': goal,
+                            'start_time': datetime.now()
+                        }
+                        st.rerun()
+            
+            # Fallback for when no recommendation is available
+            elif goal:
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button("Start Standard Session", type="primary"):
+                        st.session_state.timer_running = True
+                        st.session_state.timer_start_time = datetime.now()
+                        st.session_state.session_data[f"block_{st.session_state.current_block}"] = {
+                            'goal': goal,
+                            'start_time': datetime.now()
+                        }
+                        st.rerun()
+                
+                with col2:
+                    if st.button("End Session"):
+                        st.session_state.current_session = None
+                        st.session_state.current_block = 1
+                        st.session_state.session_data = {}
+                        st.rerun()
             
             st.markdown('</div>', unsafe_allow_html=True)
-            
-            # Show adaptation suggestion
-            if st.session_state.session_data:
-                suggestion = get_adaptation_suggestion(st.session_state.session_data)
-                st.markdown(f'<div class="reflection-card"><strong>Suggestion:</strong> {suggestion}</div>', unsafe_allow_html=True)
         
         # Timer display
         elif st.session_state.timer_running:
@@ -323,9 +403,14 @@ def show_session_page():
                         st.rerun()
             else:
                 # Timer is running
+                # Get session duration from recommendation or use default
+                current_block_data = st.session_state.session_data.get(f"block_{st.session_state.current_block}", {})
+                recommendation = current_block_data.get('recommendation')
+                session_duration = recommendation.focus_duration if recommendation else 25
+                
                 elapsed = (datetime.now() - st.session_state.timer_start_time).total_seconds()
-                remaining = max(0, 25 * 60 - elapsed)
-                progress = 1 - (remaining / (25 * 60))
+                remaining = max(0, session_duration * 60 - elapsed)
+                progress = 1 - (remaining / (session_duration * 60))
                 
                 if remaining > 0:
                     # Circular timer
@@ -377,25 +462,63 @@ def show_session_page():
             
             current_block_data = st.session_state.session_data[f"block_{st.session_state.current_block}"]
             
-            completed = st.radio(
-                "Did you complete your goal?",
-                ["Yes", "Partially", "No"]
-            )
+            col1, col2 = st.columns(2)
             
-            distractions = st.text_area(
-                "What distracted you during this session?",
-                placeholder="e.g., Phone notifications, Email, Social media, None..."
-            )
+            with col1:
+                completed = st.radio(
+                    "Did you complete your goal?",
+                    ["Yes", "Partially", "No"]
+                )
+                
+                focus_rating = st.slider("How focused were you?", 1, 5, 3, help="1=Very distracted, 5=Highly focused")
+                
+                energy_after = st.slider("Energy level after session", 1, 5, 3, help="1=Exhausted, 5=Still energized")
             
-            what_worked = st.text_area(
-                "What worked well?",
-                placeholder="e.g., Quiet environment, Clear goal, Good energy..."
-            )
+            with col2:
+                distractions = st.text_area(
+                    "What distracted you?",
+                    placeholder="e.g., Phone notifications, Email, Social media, None...",
+                    height=80
+                )
+                
+                what_worked = st.text_area(
+                    "What worked well?",
+                    placeholder="e.g., Quiet environment, Clear goal, Good energy...",
+                    height=80
+                )
             
-            improvements = st.text_area(
-                "What would you do differently next time?",
-                placeholder="e.g., Put phone away, Use website blocker, Set smaller goal..."
-            )
+            # Adaptive feedback section
+            if st.session_state.current_task_context:
+                st.markdown("### Intelligent Adaptation")
+                
+                # Get adaptive feedback
+                performance = PerformanceData(
+                    task_completed=completed == "Yes",
+                    focus_rating=focus_rating,
+                    energy_after=energy_after,
+                    distractions=distractions.split(', ') if distractions else [],
+                    what_worked=what_worked,
+                    session_duration=current_block_data.get('recommendation', SessionRecommendation(25, 5, "", 0.5, "")).focus_duration
+                )
+                
+                adaptation = st.session_state.adaptive_agent.adapt_after_session(
+                    performance, st.session_state.current_task_context
+                )
+                
+                st.markdown(f"""
+                <div class="reflection-card">
+                    <h4>Adaptive Recommendations</h4>
+                    <p><strong>Next Session Duration:</strong> {adaptation['next_session_duration']} minutes</p>
+                    <p><strong>Break Duration:</strong> {adaptation['break_duration']} minutes</p>
+                    <p><strong>Energy Management:</strong> {adaptation['energy_management']}</p>
+                    <p><strong>AI Suggestion:</strong> {adaptation['suggestions']}</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                if adaptation['distraction_strategies']:
+                    st.markdown("**Distraction Strategies:**")
+                    for strategy in adaptation['distraction_strategies']:
+                        st.markdown(f"- {strategy}")
             
             col1, col2 = st.columns(2)
             with col1:
@@ -404,9 +527,10 @@ def show_session_page():
                     current_block_data.update({
                         'completed': completed == "Yes",
                         'partially_completed': completed == "Partially",
+                        'focus_rating': focus_rating,
+                        'energy_after': energy_after,
                         'distractions': distractions,
                         'what_worked': what_worked,
-                        'improvements': improvements,
                         'end_time': datetime.now()
                     })
                     
@@ -476,6 +600,23 @@ def show_dashboard_page():
         st.metric("Success Rate", f"{success_rate:.1f}%")
     with col4:
         st.metric("Total Focus Time", f"{int(total_focus_time)}m")
+    
+    # Weekly insights
+    weekly_insights = st.session_state.adaptive_agent.get_weekly_insights()
+    if "message" not in weekly_insights:
+        st.subheader("Weekly Insights")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("This Week", weekly_insights["total_sessions"])
+        with col2:
+            st.metric("Weekly Success", f"{weekly_insights['success_rate']:.1%}")
+        with col3:
+            st.metric("Avg Focus", f"{weekly_insights['average_focus']:.1f}/5")
+        
+        if weekly_insights["recommendations"]:
+            st.markdown("**AI Recommendations:**")
+            for rec in weekly_insights["recommendations"]:
+                st.markdown(f"- {rec}")
     
     # Recent sessions
     st.subheader("Recent Sessions")

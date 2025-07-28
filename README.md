@@ -136,14 +136,23 @@ Focus Flow Agent MVP
 Create a `.env` file in the project root:
 
 ```env
-# Nemotron API (optional)
-NEMOTRON_API_KEY=your_api_key_here
-NEMOTRON_API_URL=https://api.nemotron.ai/v1/chat/completions
+# NVIDIA API (optional - for intelligent reasoning)
+NEMOTRON_API_KEY=your_nvidia_api_key_here
+NEMOTRON_API_URL=https://integrate.api.nvidia.com/v1
+NEMOTRON_MODEL=nvidia/llama-3.3-nemotron-super-49b-v1.5
 
 # Timer settings (can be modified in config.py)
 DEFAULT_FOCUS_DURATION=25
 DEFAULT_BREAK_DURATION=5
 ```
+
+## 🔒 Security
+
+- **API Keys**: Stored securely in `.env` file (never in code)
+- **Environment Variables**: `.env` file is in `.gitignore`
+- **Error Handling**: No sensitive information exposed in error messages
+- **Fallback Logic**: App works without API keys using intelligent fallback
+- **Local Data**: All session data stored locally in JSON files
 
 ### Customization
 

@@ -34,7 +34,8 @@ class NemotronAgent:
             result = response.json()
             return result["choices"][0]["message"]["content"]
         except Exception as e:
-            print(f"Error calling Nemotron API: {e}")
+            # Don't expose API details in error messages
+            print(f"Error calling AI service: {type(e).__name__}")
             return None
     
     def suggest_goal(self, session_number: int, previous_goals: list = None) -> str:
