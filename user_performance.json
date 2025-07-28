@@ -77,6 +77,139 @@
       "duration": 25,
       "distractions": [],
       "what_worked": ""
+    },
+    {
+      "timestamp": "2025-07-27T18:55:29.747889",
+      "task_name": "I need to write a english essay ",
+      "task_type": "general",
+      "difficulty": 4,
+      "energy_before": 2,
+      "energy_after": 3,
+      "focus_rating": 3,
+      "completed": true,
+      "duration": 25,
+      "distractions": [],
+      "what_worked": ""
+    },
+    {
+      "timestamp": "2025-07-27T18:55:38.055955",
+      "task_name": "I need to write a english essay ",
+      "task_type": "general",
+      "difficulty": 4,
+      "energy_before": 2,
+      "energy_after": 3,
+      "focus_rating": 3,
+      "completed": true,
+      "duration": 25,
+      "distractions": [
+        "p[hone"
+      ],
+      "what_worked": ""
+    },
+    {
+      "timestamp": "2025-07-27T18:55:40.324417",
+      "task_name": "I need to write a english essay ",
+      "task_type": "general",
+      "difficulty": 4,
+      "energy_before": 2,
+      "energy_after": 3,
+      "focus_rating": 3,
+      "completed": true,
+      "duration": 25,
+      "distractions": [
+        "phone"
+      ],
+      "what_worked": ""
+    },
+    {
+      "timestamp": "2025-07-27T18:55:54.946445",
+      "task_name": "I need to write a english essay ",
+      "task_type": "general",
+      "difficulty": 4,
+      "energy_before": 2,
+      "energy_after": 3,
+      "focus_rating": 3,
+      "completed": true,
+      "duration": 25,
+      "distractions": [
+        "phone"
+      ],
+      "what_worked": "i learned about launchables\n"
+    },
+    {
+      "timestamp": "2025-07-27T18:56:41.985766",
+      "task_name": "I need to write a english essay ",
+      "task_type": "general",
+      "difficulty": 4,
+      "energy_before": 2,
+      "energy_after": 3,
+      "focus_rating": 3,
+      "completed": true,
+      "duration": 25,
+      "distractions": [
+        "phone"
+      ],
+      "what_worked": "i learned about launchables\n"
+    },
+    {
+      "timestamp": "2025-07-27T19:00:21.873176",
+      "task_name": "testing app",
+      "task_type": "general",
+      "difficulty": 1,
+      "energy_before": 1,
+      "energy_after": 3,
+      "focus_rating": 3,
+      "completed": true,
+      "duration": 25,
+      "distractions": [
+        "phone "
+      ],
+      "what_worked": "i understood the concept"
+    },
+    {
+      "timestamp": "2025-07-27T19:02:21.033266",
+      "task_name": "testing app",
+      "task_type": "general",
+      "difficulty": 1,
+      "energy_before": 1,
+      "energy_after": 3,
+      "focus_rating": 3,
+      "completed": true,
+      "duration": 25,
+      "distractions": [
+        "phone "
+      ],
+      "what_worked": "i understood the concept"
+    },
+    {
+      "timestamp": "2025-07-27T19:03:27.296654",
+      "task_name": "english project",
+      "task_type": "general",
+      "difficulty": 3,
+      "energy_before": 2,
+      "energy_after": 3,
+      "focus_rating": 3,
+      "completed": true,
+      "duration": 25,
+      "distractions": [
+        "phone"
+      ],
+      "what_worked": "quiet environment"
+    },
+    {
+      "timestamp": "2025-07-27T19:05:11.358750",
+      "task_name": "im testing my app",
+      "task_type": "general",
+      "difficulty": 1,
+      "energy_before": 1,
+      "energy_after": 2,
+      "focus_rating": 3,
+      "completed": false,
+      "duration": 25,
+      "distractions": [
+        "nothing but i need more time"
+      ],
+      "what_worked": "clear goal"
     }
   ],
   "task_patterns": {},
