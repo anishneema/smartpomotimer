@@ -17,29 +17,61 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for better styling
+# Custom CSS for modern aesthetic dashboard
 st.markdown("""
 <style>
+    /* Modern Dashboard Styling */
     .main-header {
-        font-size: 3rem;
-        font-weight: bold;
-        color: #1f77b4;
         text-align: center;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        font-weight: 700;
         margin-bottom: 2rem;
+        letter-spacing: -0.5px;
     }
+    
     .session-card {
-        background-color: #f0f2f6;
-        padding: 1.5rem;
-        border-radius: 10px;
-        border-left: 5px solid #1f77b4;
-        margin: 1rem 0;
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        margin-bottom: 2rem;
+        border: 1px solid #f0f0f0;
     }
+    
+    .goal-input {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        padding: 2rem;
+        border-radius: 16px;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+    
+    .reflection-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        padding: 2rem;
+        border-radius: 16px;
+        border: 1px solid #e9ecef;
+        margin: 1rem 0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+    
+    .dashboard-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        margin-top: 2rem;
+        border: 1px solid #f0f0f0;
+    }
+    
     .timer-container {
         display: flex;
         justify-content: center;
         align-items: center;
         margin: 2rem 0;
     }
+    
     .timer-circle {
         width: 300px;
         height: 300px;
@@ -49,39 +81,194 @@ st.markdown("""
         justify-content: center;
         align-items: center;
         position: relative;
-        background: conic-gradient(#1f77b4 0deg, #1f77b4 var(--progress), #e0e0e0 var(--progress));
+        background: conic-gradient(#3498db 0deg, #3498db var(--progress), #e0e0e0 var(--progress));
+        box-shadow: 0 8px 32px rgba(52, 152, 219, 0.2);
     }
+    
     .timer-display {
         font-size: 3rem;
         font-weight: bold;
-        color: #1f77b4;
+        color: #2c3e50;
         z-index: 1;
     }
-    .goal-input {
-        background-color: #ffffff;
+    
+    /* Modern Metric Cards */
+    .metric-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        padding: 1.5rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        margin: 0.5rem;
+        border: 1px solid #f0f0f0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .metric-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+    
+    .metric-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.8;
+    }
+    
+    .metric-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0.5rem 0;
+        letter-spacing: -0.5px;
+    }
+    
+    .metric-label {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-top: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Navigation Tabs */
+    .nav-tabs {
+        display: flex;
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 0.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .nav-tab {
+        flex: 1;
+        text-align: center;
         padding: 1rem;
         border-radius: 8px;
-        border: 2px solid #e0e0e0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: 500;
     }
-    .reflection-card {
-        background-color: #fff3cd;
-        padding: 1rem;
+    
+    .nav-tab.active {
+        background: white;
+        color: #3498db;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-tab:not(.active) {
+        color: #7f8c8d;
+    }
+    
+    /* Time Range Selector */
+    .time-range {
+        display: flex;
+        background: #f8f9fa;
         border-radius: 8px;
-        border-left: 5px solid #ffc107;
-        margin: 1rem 0;
+        padding: 0.25rem;
+        margin-bottom: 1rem;
     }
+    
+    .time-btn {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .time-btn.active {
+        background: white;
+        color: #3498db;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .time-btn:not(.active) {
+        color: #7f8c8d;
+    }
+    
+    /* Section Headers */
+    .section-header {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .section-icon {
+        font-size: 1.2rem;
+        opacity: 0.7;
+    }
+    
+    /* Status Indicators */
+    .status-completed {
+        color: #27ae60;
+        font-weight: 600;
+    }
+    
+    .status-partial {
+        color: #f39c12;
+        font-weight: 600;
+    }
+    
+    .status-incomplete {
+        color: #e74c3c;
+        font-weight: 600;
+    }
+    
+    /* Graph Container */
+    .graph-container {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f0f0f0;
+    }
+    
+    /* Stats Cards */
     .stats-card {
-        background-color: #d1ecf1;
-        padding: 1rem;
-        border-radius: 8px;
-        border-left: 5px solid #17a2b8;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        padding: 1.5rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        border: 1px solid #f0f0f0;
         margin: 1rem 0;
     }
-    .dashboard-section {
-        background-color: #f8f9fa;
-        padding: 2rem;
-        border-radius: 10px;
-        margin-top: 2rem;
+    
+    /* Compact Session Cards */
+    .session-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        margin-bottom: 1rem;
+        border: 1px solid #f0f0f0;
+        transition: box-shadow 0.2s ease;
+    }
+    
+    .session-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Block Items */
+    .block-item {
+        margin: 0.25rem 0;
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 3px solid #e9ecef;
+        transition: background-color 0.2s ease;
+    }
+    
+    .block-item:hover {
+        background: #f1f3f4;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -153,8 +340,9 @@ def get_adaptation_suggestion(previous_blocks):
         return "Let's try a 15-minute session to get back on track. You can do this!"
 
 def main():
-    # Header
+    # Modern header
     st.markdown('<h1 class="main-header">Focus Flow Agent</h1>', unsafe_allow_html=True)
+    st.markdown('<p style="text-align: center; color: #7f8c8d; margin-bottom: 2rem;">Intelligent productivity coaching with AI-powered session optimization</p>', unsafe_allow_html=True)
     
     # Main session area (like ChatGPT)
     show_session_page()
@@ -564,13 +752,28 @@ def show_session_page():
 def show_dashboard_page():
     """Dashboard showing recent sessions and stats"""
     st.markdown('<div class="dashboard-section">', unsafe_allow_html=True)
-    st.header("Dashboard")
+    
+    # Modern header with navigation tabs
+    st.markdown("""
+    <div class="nav-tabs">
+        <div class="nav-tab active">📊 Summary</div>
+        <div class="nav-tab">📈 Detail</div>
+        <div class="nav-tab">🏆 Ranking</div>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Load session data
     all_sessions = load_session_log()
     
     if not all_sessions:
-        st.info("No sessions completed yet. Start your first session!")
+        st.markdown("""
+        <div class="graph-container">
+            <div style="text-align: center; padding: 3rem;">
+                <h3 style="color: #7f8c8d; margin-bottom: 1rem;">No sessions completed yet</h3>
+                <p style="color: #95a5a6;">Start your first session to see your progress!</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
         return
     
@@ -578,6 +781,7 @@ def show_dashboard_page():
     total_blocks = 0
     completed_blocks = 0
     total_focus_time = 0
+    total_sessions = len(all_sessions)
     
     for session_id, session_data in all_sessions.items():
         for block_id, block_data in session_data.items():
@@ -589,58 +793,182 @@ def show_dashboard_page():
                 end = datetime.fromisoformat(block_data['end_time'])
                 total_focus_time += (end - start).total_seconds() / 60
     
-    # Stats cards
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric("Total Sessions", len(all_sessions))
-    with col2:
-        st.metric("Total Blocks", total_blocks)
-    with col3:
-        success_rate = (completed_blocks / total_blocks * 100) if total_blocks > 0 else 0
-        st.metric("Success Rate", f"{success_rate:.1f}%")
-    with col4:
-        st.metric("Total Focus Time", f"{int(total_focus_time)}m")
+    success_rate = (completed_blocks / total_blocks * 100) if total_blocks > 0 else 0
     
-    # Weekly insights
+    # Activity Summary Section
+    st.markdown('<div class="section-header">📈 Activity Summary</div>', unsafe_allow_html=True)
+    
+    # Modern metric cards
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-icon">⏰</div>
+            <div class="metric-value">{int(total_focus_time)}</div>
+            <div class="metric-label">Hours Focused</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-icon">📅</div>
+            <div class="metric-value">{total_sessions}</div>
+            <div class="metric-label">Days Accessed</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        # Calculate streak (simplified)
+        streak = min(total_sessions, 7)  # Placeholder for actual streak calculation
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-icon">🔥</div>
+            <div class="metric-value">{streak}</div>
+            <div class="metric-label">Day Streak</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Focus Hours Section
+    st.markdown('<div class="section-header">⏱️ Focus Hours</div>', unsafe_allow_html=True)
+    
+    # Time range selector
+    col1, col2, col3 = st.columns([2, 1, 1])
+    with col1:
+        st.markdown("""
+        <div class="time-range">
+            <button class="time-btn active">Week</button>
+            <button class="time-btn">Month</button>
+            <button class="time-btn">Year 🔒</button>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown('<div style="text-align: center; color: #7f8c8d;">← This Week →</div>', unsafe_allow_html=True)
+    
+    # Graph container
+    st.markdown("""
+    <div class="graph-container">
+        <div style="text-align: center; padding: 2rem;">
+            <h4 style="color: #7f8c8d; margin-bottom: 0.5rem;">Focus Hours This Week</h4>
+            <p style="color: #95a5a6; font-size: 0.9rem;">* This report will be available when you are logged in</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Weekly insights with modern styling
     weekly_insights = st.session_state.adaptive_agent.get_weekly_insights()
     if "message" not in weekly_insights:
-        st.subheader("Weekly Insights")
+        st.markdown('<div class="section-header">🧠 AI Insights</div>', unsafe_allow_html=True)
+        
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.metric("This Week", weekly_insights["total_sessions"])
+            st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-icon">📊</div>
+                <div class="metric-value">{weekly_insights["total_sessions"]}</div>
+                <div class="metric-label">This Week</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
         with col2:
-            st.metric("Weekly Success", f"{weekly_insights['success_rate']:.1%}")
+            st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-icon">✅</div>
+                <div class="metric-value">{weekly_insights['success_rate']:.0%}</div>
+                <div class="metric-label">Success Rate</div>
+            </div>
+            """, unsafe_allow_html=True)
+        
         with col3:
-            st.metric("Avg Focus", f"{weekly_insights['average_focus']:.1f}/5")
+            st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-value">{weekly_insights['average_focus']:.1f}</div>
+                <div class="metric-label">Avg Focus</div>
+            </div>
+            """, unsafe_allow_html=True)
         
         if weekly_insights["recommendations"]:
-            st.markdown("**AI Recommendations:**")
+            st.markdown('<div class="section-header">💡 AI Recommendations</div>', unsafe_allow_html=True)
             for rec in weekly_insights["recommendations"]:
-                st.markdown(f"- {rec}")
+                st.markdown(f"""
+                <div class="stats-card">
+                    <p style="margin: 0; color: #2c3e50;">{rec}</p>
+                </div>
+                """, unsafe_allow_html=True)
     
-    # Recent sessions
-    st.subheader("Recent Sessions")
+    # Recent sessions with modern styling
+    st.markdown('<div class="section-header">📝 Recent Sessions</div>', unsafe_allow_html=True)
     
-    for session_id, session_data in list(all_sessions.items())[-3:]:  # Show last 3 sessions
-        st.markdown('<div class="session-card">', unsafe_allow_html=True)
-        
-        # Parse session ID for date
-        try:
-            date_str = session_id.split('_')[1] + '_' + session_id.split('_')[2]
-            session_date = datetime.strptime(date_str, '%Y%m%d_%H%M%S')
-            st.write(f"**Session:** {session_date.strftime('%B %d, %Y at %I:%M %p')}")
-        except:
-            st.write(f"**Session:** {session_id}")
-        
-        # Show blocks in this session
-        for block_id, block_data in session_data.items():
-            status = "✓" if block_data.get('completed', False) else "✗"
-            st.write(f"{status} **{block_id.replace('_', ' ').title()}:** {block_data.get('goal', 'No goal')}")
+    # Create a compact session list
+    recent_sessions = list(all_sessions.items())[-3:]  # Show last 3 sessions
+    
+    if recent_sessions:
+        for session_id, session_data in recent_sessions:
+            # Parse session ID for date
+            try:
+                date_str = session_id.split('_')[1] + '_' + session_id.split('_')[2]
+                session_date = datetime.strptime(date_str, '%Y%m%d_%H%M%S')
+                session_date_str = session_date.strftime('%B %d, %Y at %I:%M %p')
+            except:
+                session_date_str = session_id
             
-            if block_data.get('distractions'):
-                st.write(f"   Distractions: {block_data['distractions']}")
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+            # Count completed blocks
+            completed_blocks = sum(1 for block_data in session_data.values() if block_data.get('completed', False))
+            total_blocks = len(session_data)
+            
+            # Create session summary
+            st.markdown(f"""
+            <div class="session-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <h4 style="color: #2c3e50; margin: 0; font-size: 1.1rem;">{session_date_str}</h4>
+                    <span style="color: #7f8c8d; font-size: 0.9rem; background: #f8f9fa; padding: 0.25rem 0.5rem; border-radius: 4px;">{completed_blocks}/{total_blocks} completed</span>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            # Show blocks in a compact format
+            for block_id, block_data in session_data.items():
+                if block_data.get('completed', False):
+                    status_class = "status-completed"
+                    status_icon = "✓"
+                elif block_data.get('partially_completed', False):
+                    status_class = "status-partial"
+                    status_icon = "○"
+                else:
+                    status_class = "status-incomplete"
+                    status_icon = "✗"
+                
+                goal_text = block_data.get('goal', 'No goal')
+                if len(goal_text) > 60:
+                    goal_text = goal_text[:57] + "..."
+                
+                st.markdown(f"""
+                <div class="block-item">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="{status_class}" style="font-size: 1.1rem;">{status_icon}</span>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 500; color: #2c3e50; margin-bottom: 0.25rem;">
+                                {block_id.replace('_', ' ').title()}
+                            </div>
+                            <div style="color: #7f8c8d; font-size: 0.9rem;">
+                                {goal_text}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            st.markdown('</div>', unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div class="graph-container">
+            <div style="text-align: center; padding: 2rem;">
+                <h4 style="color: #7f8c8d; margin-bottom: 0.5rem;">No sessions yet</h4>
+                <p style="color: #95a5a6; font-size: 0.9rem;">Complete your first session to see it here!</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 

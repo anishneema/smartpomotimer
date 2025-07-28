@@ -64,6 +64,19 @@
       "duration": 25,
       "distractions": [],
       "what_worked": ""
+    },
+    {
+      "timestamp": "2025-07-27T18:15:27.071239",
+      "task_name": "study for test",
+      "task_type": "reviewing",
+      "difficulty": 3,
+      "energy_before": 3,
+      "energy_after": 3,
+      "focus_rating": 3,
+      "completed": true,
+      "duration": 25,
+      "distractions": [],
+      "what_worked": ""
     }
   ],
   "task_patterns": {},
